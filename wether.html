@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body
+{
+  background:url(images/anders-jilden-AkUR27wtaxs-unsplash.jpg);
+    background-size: cover;
+
+}
+.container-fluid
+{
+    width: 400px;
+    height: 400px;
+    margin: 100px auto;
+    padding: 10px;
+}
+.inputs 
+{
+    padding: 2rem 0 2rem 0;
+    text-align: center;
+    justify-content: center;
+    background:rgb(0,0,0,.3);
+    border-radius: 50px 10px ;
+    box-shadow: 5px 3px 10px 5px rgb(75, 90, 88) inset;
+}
+
+
+input{
+  max-width: 200px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: none;
+
+}
+.display{
+  min-width: 300px;
+  min-height: 20px;
+  background:rgb(0,0,0,.3);
+
+}
+.w{
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  margin: 2px;
+  font-weight: bold;
+}
+h2{
+  background-color: blueviolet;
+  padding: 10px;
+  color: white;
+  font-family: cursive;
+  margin-top: 10px;
+}
+p{
+  margin-top: 10px;
+}
+
+#temp{
+  font-size: 50px;
+  color: rgb(6, 255, 255);
+}
+#wind{
+  color: red;
+}
+#add:hover{
+  background-color: rgb(255, 255, 255);
+  border: none;
+  box-shadow: 1px 2px 10px 2px rgb(33, 168, 6) inset;
+  transition: all ease 2s;
+}
+#add{
+  background-color: blueviolet;
+  border: none;
+}
+
+</style>
+<body>
+  <div class="container-fluid">
+    <section class="main">
+      <section class="inputs">
+        <input type="text" placeholder="Enter any city..." id="cityinput">
+        <input type="submit" value="Submit" id="add">
+      </section>
+
+      <section class="display">
+        <div class="w">
+          <h2 id="cityoutput"></h2>
+          <p id="description"></p>
+          <p id="temp"></p>
+          <p id="wind"></p>
+        </div>
+      </section>
+    </section>
+
+  </div>
+  <script>
+var inputval = document.querySelector('#cityinput')
+var btn = document.querySelector('#add');
+var city = document.querySelector('#cityoutput')
+var descrip = document.querySelector('#description')
+var temp = document.querySelector('#temp')
+var wind = document.querySelector('#wind')
+apik = "3045dd712ffe6e702e3245525ac7fa38"
+function convertion(val)
+{
+    return (val - 273).toFixed(2)
+}
+
+btn.addEventListener('click', function()
+{
+  fetch('https://api.openweathermap.org/data/2.5/weather?q='+inputval.value+'&appid='+apik)
+  .then(res => res.json())
+
+
+  .then(data => 
+  {
+    var nameval = data['name']
+    var descrip = data['weather']['0']['description']
+    var tempature = data['main']['temp']
+    var wndspd = data['wind']['speed']
+    city.innerHTML=`Weather of <span>${nameval}<span>`
+    temp.innerHTML = `<span>${ convertion(tempature)} C</span>`
+    description.innerHTML = `Sky Conditions: <span>${descrip}<span>`
+    wind.innerHTML = `Wind Speed: <span>${wndspd} km/h<span>`
+
+  })
+
+  .catch(err => alert('You entered Wrong city name'))
+})
+  </script>
+</body>
+</html>
